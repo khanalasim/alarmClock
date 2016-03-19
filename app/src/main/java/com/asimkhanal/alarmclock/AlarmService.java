@@ -13,6 +13,7 @@ import android.util.Log;
 
 public class AlarmService extends IntentService {
     private NotificationManager alarmNotificationManager;
+    Intent myIntent;
 
     public AlarmService() {
         super("AlarmService");
@@ -31,14 +32,19 @@ public class AlarmService extends IntentService {
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, AddActivity.class), 0);
 
-        NotificationCompat.Builder alamNotificationBuilder = new NotificationCompat.Builder(
+
+        myIntent =new Intent(AlarmService.this,MainActivity.class);
+        myIntent.putExtra("stop",true);
+        PendingIntent prevPendingIntent = PendingIntent.getBroadcast(AlarmService.this, 0, myIntent, 0);
+        NotificationCompat.Builder alarmNotificationBuilder = new NotificationCompat.Builder(
                 this).setContentTitle("Alarm").setSmallIcon(R.mipmap.ic_launcher)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
-                .setContentText(msg);
+                .setContentText(msg).addAction(android.R.drawable.ic_lock_idle_alarm, "Stop", prevPendingIntent);
 
 
-        alamNotificationBuilder.setContentIntent(contentIntent);
-        alarmNotificationManager.notify(1, alamNotificationBuilder.build());
+        alarmNotificationBuilder.setContentIntent(contentIntent);
+        alarmNotificationManager.notify(1, alarmNotificationBuilder.build());
         Log.d("AlarmService", "Notification sent.");
     }
+
 }
