@@ -30,16 +30,14 @@ public class AlarmService extends IntentService {
                 .getSystemService(Context.NOTIFICATION_SERVICE);
 
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, AddActivity.class), 0);
+                new Intent(this, AlarmActivity.class), 0);
 
 
-        myIntent =new Intent(AlarmService.this,MainActivity.class);
-        myIntent.putExtra("stop",true);
-        PendingIntent prevPendingIntent = PendingIntent.getBroadcast(AlarmService.this, 0, myIntent, 0);
+
         NotificationCompat.Builder alarmNotificationBuilder = new NotificationCompat.Builder(
                 this).setContentTitle("Alarm").setSmallIcon(R.mipmap.ic_launcher)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
-                .setContentText(msg).addAction(android.R.drawable.ic_lock_idle_alarm, "Stop", prevPendingIntent);
+                .setContentText(msg);
 
 
         alarmNotificationBuilder.setContentIntent(contentIntent);
